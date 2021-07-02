@@ -1,0 +1,8 @@
+{
+  "name": "dog-profile",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "tailwindcss": "^2.2.4"
+  }
+}

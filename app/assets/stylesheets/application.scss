@@ -1,0 +1,21 @@
+$body-bg: #2d0625;
+
+$theme-colors: (
+  "primary": #bdef53,
+  "secondary": #f662d1,
+  "success": #d5e3ac,
+  "info": red,
+  "warning": red,
+  "danger": red,
+  "light": #96dff4,
+  "dark": #2d0625
+);
+
+@import "bootstrap";
+
+
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
