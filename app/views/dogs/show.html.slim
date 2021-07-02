@@ -1,0 +1,25 @@
+section
+  h2.text-primary = @dog.name
+  .carousel-container
+    #carousel1.carousel.slide data-ride="carousel" 
+      ol.carousel-indicators
+        - 0.upto(@dog.images.length - 1) do |i|
+          li.active data-slide-to=i data-target="#carousel1" 
+      .carousel-inner
+        .carousel-item.active.dog-image
+          = image_tag url_for(@dog.images[0]), alt: "Photo of #{@dog.name}"
+        - @dog.images[1..-1].each do |image|
+          .carousel-item.dog-image
+            = image_tag url_for(image), alt: "Photo of #{@dog.name}"
+      a.carousel-control-prev data-slide="prev" href="#carousel1" role="button" 
+        span.carousel-control-prev-icon aria-hidden="true" 
+        span.sr-only Previous
+      a.carousel-control-next data-slide="next" href="#carousel1" role="button" 
+        span.carousel-control-next-icon aria-hidden="true" 
+        span.sr-only Next
+
+  p.text-primary = @dog.description
+
+  = link_to "Edit #{@dog.name}'s Profile", edit_dog_path, class: "btn btn-primary edit-dog"
+  = link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary edit-dog"
+

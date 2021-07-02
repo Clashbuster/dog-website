@@ -4,22 +4,22 @@
     <title>DogProfile</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
   </head>
 
   <body>
     <div id="layout">
-      <header>
+      <header class="d-flex">
         <h1><%= link_to 'Dog Profile Demo', root_path %></h1>
         <div class="actions">
           <% if current_user %>
-            <%= link_to 'Add your dog', new_dog_path %>
-            <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+            <%= link_to 'Add your dog', new_dog_path, class: "btn btn-primary" %>
+            <%= link_to 'Sign out',  destroy_user_session_path, method: :delete, class: "btn btn-primary" %>
           <% else %>
-            <%= link_to 'Sign in', new_user_session_path %>
-            <%= link_to 'Sign up', new_user_registration_path %>
+            <%= link_to 'Sign in',  new_user_session_path, class: "btn btn-primary" %>
+            <%= link_to 'Sign up',  new_user_registration_path, class: "btn btn-primary" %>
           <% end %>
         </div>
       </header>

@@ -1,0 +1,5 @@
+a.dog-thumbnail.block href=url_for(dog)
+  article.h-100.w-100
+    h2.dog-name
+      | #{dog.name}
+    = image_tag url_for(dog.images.first), class: "dog-photo w-100 flex-grow-1", alt: "Photo of #{dog.name}"

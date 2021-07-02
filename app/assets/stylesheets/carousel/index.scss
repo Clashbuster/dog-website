@@ -1,0 +1,14 @@
+.carousel-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dog-image {
+  height: 600px;
+  width: 100%;
+  > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
