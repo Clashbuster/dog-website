@@ -4,5 +4,12 @@
   - if @next_valid
     = link_to "next", root_path(:page => @page + 1), class: "btn btn-primary"
 .dog-index.d-flex.flex-row.p-2.flex-wrap
-  = render partial: 'thumbnail', collection: @dogs, as: :dog
+  - if  @first_partition.present?
+    = render partial: 'thumbnail', collection: @first_partition, as: :dog
+    = render partial: 'ad-thumbnail'
+  - if @second_partition.present?
+    = render partial: 'thumbnail', collection: @second_partition, as: :dog
+    = render partial: 'ad-thumbnail'
+  - if @dogs[4].present?
+    = render partial: 'thumbnail', :locals => {dog: @dogs.last}
 

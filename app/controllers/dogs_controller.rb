@@ -15,6 +15,8 @@ class DogsController < ApplicationController
 
     @next_valid = Dog.all[range_start..range_end].length === 6
     @dogs = Dog.all[range_start..range_end - 1]
+    @first_partition = @dogs[0..1]
+    @second_partition = @dogs[2..3]
 
   end
 
