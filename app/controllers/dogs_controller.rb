@@ -4,12 +4,36 @@ class DogsController < ApplicationController
   # GET /dogs
   # GET /dogs.json
   def index
-    @dogs = Dog.all
+    if params[:page]
+      @page = params[:page].to_i
+    else
+      @page = 0
+    end
+
+    range_start = @page * 5
+    range_end = (@page * 5) + 5
+
+    @next_valid = Dog.all[range_start..range_end].length === 6
+    @dogs = Dog.all[range_start..range_end - 1]
+
   end
 
   # GET /dogs/1
   # GET /dogs/1.json
   def show
+    dog = Dog.find_by(id: params[:id])
+    if dog.user.present?
+      @edit_valid = true if dog.user.id == current_user.id
+    end
+    if params[:likes]
+      if dog.likes.present?
+        dog.likes += 1
+        dog.save!
+      else
+        dog.likes = 1
+        dog.save!
+      end
+    end
   end
 
   # GET /dogs/new
@@ -25,6 +49,7 @@ class DogsController < ApplicationController
   # POST /dogs.json
   def create
     @dog = Dog.new(dog_params)
+    @dog.user = current_user
 
     respond_to do |format|
       if @dog.save
@@ -73,6 +98,6 @@ class DogsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dog_params
-      params.require(:dog).permit(:name, :description, :images)
+      params.require(:dog).permit(:name, :likes, :description, :page, :images => [])
     end
 end

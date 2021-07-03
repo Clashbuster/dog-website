@@ -1,2 +1,8 @@
+.pagination.d-flex.flex-row.flex-wrap.justify-content-end
+  - if @page > 0
+    = link_to "previous", root_path(:page => @page - 1), class: "btn btn-primary"
+  - if @next_valid
+    = link_to "next", root_path(:page => @page + 1), class: "btn btn-primary"
 .dog-index.d-flex.flex-row.p-2.flex-wrap
   = render partial: 'thumbnail', collection: @dogs, as: :dog
+

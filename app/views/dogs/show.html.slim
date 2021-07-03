@@ -1,5 +1,10 @@
 section
-  h2.text-primary = @dog.name
+  .title-section.d-flex.flex-row
+    h2.text-primary = @dog.name
+    - if !@edit_valid
+      a.btn.btn-primary href="/dogs/#{@dog.id}?likes=true"
+        | Like
+    p = @dog.likes
   .carousel-container
     #carousel1.carousel.slide data-ride="carousel" 
       ol.carousel-indicators
@@ -19,7 +24,9 @@ section
         span.sr-only Next
 
   p.text-primary = @dog.description
-
-  = link_to "Edit #{@dog.name}'s Profile", edit_dog_path, class: "btn btn-primary edit-dog"
-  = link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary edit-dog"
+  - if @edit_valid
+    = link_to "Edit #{@dog.name}'s Profile", edit_dog_path, class: "btn btn-primary edit-dog"
+    = link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary edit-dog"
+  - else
+    = link_to "Like #{@dog.name}", edit_dog_path, class: "btn btn-primary edit-dog"
 
