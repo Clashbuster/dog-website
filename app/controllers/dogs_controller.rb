@@ -1,5 +1,6 @@
 class DogsController < ApplicationController
   before_action :set_dog, only: [:show, :edit, :update, :destroy]
+  include HourlyLikesHelper
 
   # GET /dogs
   # GET /dogs.json
@@ -10,14 +11,33 @@ class DogsController < ApplicationController
       @page = 0
     end
 
+    setup_likes_helper
+
+
     range_start = @page * 5
     range_end = (@page * 5) + 5
 
-    @next_valid = Dog.all[range_start..range_end].length === 6
+
+
+    if params[:filter]
+      liked_dogs = @likeshelper.past_hour
+      puts liked_dogs
+      @possible_dogs = []
+      liked_dogs.each do |k, v|
+        @possible_dogs << {"likes" => v, "dog" => k}
+      end
+      @possible_dogs.sort! { |a, b|  b['likes'] <=> a['likes'] }
+      @possible_dogs.map! do |element|
+        Dog.find_by(id: element['dog'])
+      end
+    else
+      @possible_dogs = Dog.all[range_start..range_end - 1]
+    end
+
+    @next_valid = @possible_dogs[range_start..range_end].length === 6
     @dogs = Dog.all[range_start..range_end - 1]
     @first_partition = @dogs[0..1]
     @second_partition = @dogs[2..3]
-
   end
 
   # GET /dogs/1
@@ -27,7 +47,9 @@ class DogsController < ApplicationController
     if dog.user.present?
       @edit_valid = true if dog.user.id == current_user.id
     end
+    setup_likes_helper
     if params[:likes]
+      @likeshelper.update_hourly(dog)
       if dog.likes.present?
         dog.likes += 1
         dog.save!
@@ -93,6 +115,17 @@ class DogsController < ApplicationController
   end
 
   private
+
+
+    def setup_likes_helper
+      if !@likeshelper
+        @likeshelper = HourlyLikes.new
+      end
+  
+      if @likeshelper.begin
+        @likeshelper.start
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_dog
       @dog = Dog.find(params[:id])
@@ -100,6 +133,6 @@ class DogsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dog_params
-      params.require(:dog).permit(:name, :likes, :description, :page, :images => [])
+      params.require(:dog).permit(:name, :likes, :description, :page, :filter,  :images => [])
     end
 end
