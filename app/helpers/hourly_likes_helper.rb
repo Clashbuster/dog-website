@@ -9,13 +9,11 @@ module HourlyLikesHelper
     end
 
     def start
-      puts "started"
       @begin = false
       Concurrent::Future.execute { sleep(5); reset_hour }
     end
 
     def reset_hour
-      puts "reset"
       @past_hour = @current_hour
       @current_hour = {}
       Concurrent::Future.execute { sleep(5); reset_hour }
