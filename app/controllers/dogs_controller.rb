@@ -11,9 +11,6 @@ class DogsController < ApplicationController
       @page = 0
     end
 
-    setup_likes_helper
-
-
     range_start = @page * 5
     range_end = (@page * 5) + 5
 
@@ -34,7 +31,7 @@ class DogsController < ApplicationController
       @possible_dogs = Dog.all[range_start..range_end - 1]
     end
 
-    @next_valid = @possible_dogs[range_start..range_end].length === 6
+    @next_valid = Dog.all[range_start..range_end].length === 6
     @dogs = Dog.all[range_start..range_end - 1]
     @first_partition = @dogs[0..1]
     @second_partition = @dogs[2..3]
@@ -47,9 +44,8 @@ class DogsController < ApplicationController
     if dog.user.present?
       @edit_valid = true if dog.user.id == current_user.id
     end
-    setup_likes_helper
+    
     if params[:likes]
-      @likeshelper.update_hourly(dog)
       if dog.likes.present?
         dog.likes += 1
         dog.save!
